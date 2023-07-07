@@ -17,5 +17,6 @@ class SpriteSheet(list):
 
 grass = SpriteSheet("grass.png", 3)
 energy = load_image("energy.png")
+mouse = load_image("mouse.png")
 
 pygame.display.quit()

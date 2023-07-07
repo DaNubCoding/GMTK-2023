@@ -8,6 +8,7 @@ from enum import Enum, auto
 
 class Layers(Enum):
     GROUND = auto()
+    ANIMALS = auto()
     PLANTS = auto()
     GUI = auto()
 

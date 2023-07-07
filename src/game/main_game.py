@@ -1,4 +1,5 @@
 from pygame.locals import *
+from math import *
 import pygame
 
 from src.management.sprite import Sprite, Layers
@@ -7,6 +8,7 @@ import src.common.textures as texture
 from src.game.ground import Ground
 from src.game.camera import Camera
 from src.common.constants import *
+from src.game.mouse import Mouse
 from src.game.grass import Grass
 
 class MainGame(Scene):
@@ -14,13 +16,14 @@ class MainGame(Scene):
         super().setup()
         self.grasses = {}
 
-        self.player = Grass(self, 64)
-        self.camera = Camera(self)
-        self.energy_display = EnergyDisplay(self)
-
         self.grounds = {}
         for x in range(WIDTH + 1):
             Ground(self, x)
+
+        self.player = Grass(self, 64)
+        self.camera = Camera(self)
+        self.energy_display = EnergyDisplay(self)
+        Mouse(self, 40)
 
     def update(self) -> None:
         self.camera.update()
@@ -38,6 +41,9 @@ class MainGame(Scene):
         # here
         super().draw()
         # or here
+
+    def get_y(self, x: int) -> None:
+        return self.grounds[floor(x - 0.5)].pos.y
 
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:

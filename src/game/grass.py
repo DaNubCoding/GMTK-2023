@@ -21,7 +21,7 @@ class Grass(Sprite):
         self.lighten = (randint(0, 15), randint(0, 40), randint(0, 15))
 
     def update(self) -> None:
-        self.pos.y = self.scene.grounds[floor(self.pos.x - 0.5)].pos.y
+        self.pos.y = self.scene.get_y(self.pos.x)
 
         if self.ani_timer.ended:
             self.frame += 1
