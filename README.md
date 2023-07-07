@@ -1,3 +1,5 @@
-# pygame-template
+# GMTK-2023
 
-Just a simple template for myself to build on top of when starting a new project. 
+Roles reversed! Plants and animals reverse roles and plants find themselves at the top of the foodchain!
+
+Credit goes to Bryndan Meyerholt for the PixGamer font.
