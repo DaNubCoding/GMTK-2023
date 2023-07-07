@@ -10,6 +10,7 @@ class Camera:
         self.true_pos = self.player.pos.copy()
 
     def update(self) -> None:
+        self.player = self.scene.player
         tick_offset = self.player.pos - self.true_pos - VEC(SIZE) // 2 - (0, 20)
-        self.true_pos += tick_offset * 3 * self.manager.dt
+        self.true_pos += tick_offset * 2 * self.manager.dt
         self.pos = intvec(self.true_pos)

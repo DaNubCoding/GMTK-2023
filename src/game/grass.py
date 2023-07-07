@@ -18,6 +18,7 @@ class Grass(Sprite):
         self.frame = 0
         self.ani_timer = LoopTimer(lambda: uniform(0.15, 0.3))
         self.bright = False
+        self.lighten = (randint(0, 15), randint(0, 40), randint(0, 15))
 
     def update(self) -> None:
         self.pos.y = self.scene.grounds[floor(self.pos.x - 0.5)].pos.y
@@ -33,8 +34,10 @@ class Grass(Sprite):
     def draw(self) -> None:
         image = texture.grass[self.frame].copy()
         if self.bright:
-            (surf := pygame.Surface(image.get_size())).fill((30, 70, 30))
+            (surf := pygame.Surface(image.get_size())).fill((80, 80, 80))
             image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
+        (surf := pygame.Surface(image.get_size())).fill(self.lighten)
+        image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
         self.manager.screen.blit(image, self.pos - (self.size.x / 2, self.size.y) - self.scene.camera.pos)
 
     def spread(self) -> None:
