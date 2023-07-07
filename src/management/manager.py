@@ -6,6 +6,7 @@ import sys
 from src.common.constants import FPS, SIZE
 from src.game.main_game import MainGame
 from src.management.scene import Scene
+from src.common.constants import *
 
 class AbortScene(Exception):
     def __str__(self):
@@ -20,11 +21,13 @@ class GameManager:
         pygame.init()
 
         self.flags = DOUBLEBUF | SCALED
-        self.screen = pygame.display.set_mode(SIZE, self.flags)
+        self.window = pygame.display.set_mode(WIN_SIZE, self.flags)
         self.clock = pygame.time.Clock()
         self.dt = self.clock.tick_busy_loop(FPS) / 1000
         self.window_changing = False
         self.events = {}
+
+        self.screen = pygame.Surface((WIN_WIDTH // 4, WIN_HEIGHT // 4))
 
         self.scene = MainGame(self, None)
         self.scene.setup()
@@ -43,6 +46,7 @@ class GameManager:
             except AbortGame:
                 running = False
 
+            self.window.blit(pygame.transform.scale_by(self.screen, 4), (0, 0))
             pygame.display.flip()
 
         self.quit()
