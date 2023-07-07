@@ -16,5 +16,6 @@ class SpriteSheet(list):
         self.len = len(self)
 
 grass = SpriteSheet("grass.png", 3)
+energy = load_image("energy.png")
 
 pygame.display.quit()

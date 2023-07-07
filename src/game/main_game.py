@@ -1,11 +1,13 @@
 from pygame.locals import *
 import pygame
 
+from src.management.sprite import Sprite, Layers
 from src.management.scene import Scene
-from src.game.grass import Grass
+import src.common.textures as texture
 from src.game.ground import Ground
 from src.game.camera import Camera
 from src.common.constants import *
+from src.game.grass import Grass
 
 class MainGame(Scene):
     def setup(self) -> None:
@@ -14,6 +16,7 @@ class MainGame(Scene):
 
         self.player = Grass(self, 64)
         self.camera = Camera(self)
+        self.energy_display = EnergyDisplay(self)
 
         self.grounds = {}
         for x in range(WIDTH + 1):
@@ -35,3 +38,13 @@ class MainGame(Scene):
         # here
         super().draw()
         # or here
+
+class EnergyDisplay(Sprite):
+    def __init__(self, scene: Scene) -> None:
+        super().__init__(scene, Layers.GUI)
+        self.energy = 10
+
+    def draw(self) -> None:
+        self.manager.screen.blit(texture.energy, (3, 2))
+        text = ENERGY_FONT.render(f"{self.energy}", False, (0, 0, 0))
+        self.manager.screen.blit(text, (24, 0))

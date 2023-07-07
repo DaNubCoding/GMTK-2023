@@ -41,6 +41,8 @@ class Grass(Sprite):
         self.manager.screen.blit(image, self.pos - (self.size.x / 2, self.size.y) - self.scene.camera.pos)
 
     def spread(self) -> None:
+        if self.scene.energy_display.energy <= 0: return
+        self.scene.energy_display.energy -= 1
         choices = [x for x in range(-5, 6) if self.pos.x + x not in self.scene.grasses]
         if not choices: return
         Grass(self.scene, self.pos.x + choice(choices))

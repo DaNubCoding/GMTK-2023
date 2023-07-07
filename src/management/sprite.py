@@ -9,6 +9,7 @@ from enum import Enum, auto
 class Layers(Enum):
     GROUND = auto()
     PLANTS = auto()
+    GUI = auto()
 
 class Sprite(AbstractClass):
     def __init__(self, scene: Scene, layer: int | Layers) -> None:
