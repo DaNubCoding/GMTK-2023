@@ -1,5 +1,6 @@
 from opensimplex import noise2
 from pygame.locals import *
+from random import *
 import pygame
 
 from src.management.sprite import Sprite, Layers
@@ -13,6 +14,16 @@ class Ground(Sprite):
         self.pos = VEC(x, noise2(x * 0.04, 0.5) * 14 + 60)
         self.surface = pygame.Surface((1, 50), SRCALPHA)
         self.surface.fill(GROUND_COLOR)
+        for _ in range(12):
+            pos = (0, randint(0, self.surface.get_height() - 1))
+            n = randint(0, 30)
+            self.surface.set_at(pos, tuple(map(lambda x: min(x + n + randint(-5, 5), 255), self.surface.get_at(pos))))
+        (surf := pygame.Surface((1, randint(1, 2)))).fill((5, 5, 5))
+        self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
+        (surf := pygame.Surface((1, randint(3, 5)))).fill((5, 5, 5))
+        self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
+        (surf := pygame.Surface((1, randint(7, 10)))).fill((5, 5, 5))
+        self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
 
     def update(self) -> None:
         pass
