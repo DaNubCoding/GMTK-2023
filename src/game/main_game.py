@@ -56,8 +56,7 @@ class MainGame(Scene):
             if self.camera.pos.x - 25 + x not in self.grounds:
                 Ground(self, self.camera.pos.x - 25 + x)
 
-        # if abs(self.camera.pos.x + WIDTH // 2) > 64 and self.mice_timer.ended and self.mice_count < 2:
-        if self.mice_timer.ended:
+        if abs(self.camera.pos.x + WIDTH // 2) > 64 and self.mice_timer.ended and self.mice_count < 2:
             Mouse(self, self.camera.pos.x + choice([-12, WIDTH + 12]))
 
         if self.beetle_timer.ended:
