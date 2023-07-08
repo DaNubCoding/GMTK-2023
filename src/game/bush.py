@@ -32,8 +32,8 @@ class Bush(Sprite):
         if self.detached:
             self.vel.x += self.scene.wind_speed * self.manager.dt
             if not self.scene.gust:
-                self.vel.x *= 0.85
-            self.vel.x *= 0.98
+                self.vel.x *= 0.015 ** self.manager.dt
+            self.vel.x *= 0.1 ** self.manager.dt
             self.pos += self.vel * self.manager.dt
             if self.detach_timer.ended:
                 self.scene.energy_display.energy -= 1

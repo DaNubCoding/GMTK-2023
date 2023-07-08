@@ -109,8 +109,8 @@ class Wind(Sprite):
         super().__init__(scene, Layers.WIND)
         self.image = pygame.Surface(SIZE, SRCALPHA)
         self.trans_surf = pygame.Surface(SIZE, SRCALPHA)
-        self.trans_surf.fill((0, 0, 0, 3))
-        self.fill_timer = LoopTimer(lambda: 0.05)
+        self.trans_surf.fill((0, 0, 0, 12))
+        self.fill_timer = LoopTimer(lambda: 0.2)
 
     def update(self) -> None:
         pass
