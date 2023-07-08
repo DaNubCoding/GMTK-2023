@@ -38,6 +38,7 @@ class Mouse(Sprite):
             if int(self.pos.x + x) in self.scene.grasses:
                 self.dead = True
                 self.death_timer.start()
+                self.collided = self.scene.grasses[int(self.pos.x + x)]
 
     def draw(self) -> None:
         image = pygame.transform.flip(self.image, self.direction < 0, False)
@@ -52,4 +53,5 @@ class Mouse(Sprite):
                 Particle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()
-            self.scene.energy_display.energy += 10
+            if self.scene.player is self.collided:
+                self.scene.energy_display.energy += 10
