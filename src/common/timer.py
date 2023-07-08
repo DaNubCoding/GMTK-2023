@@ -12,6 +12,9 @@ class Timer:
         self.started = True
         self._start = time.time()
 
+    def stop(self) -> None:
+        self.period = 0
+
     @property
     def progress(self) -> float:
         return (time.time() - self._start) / self.period

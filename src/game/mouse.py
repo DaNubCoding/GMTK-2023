@@ -38,6 +38,8 @@ class Mouse(Sprite):
 
         for x in range(int(-self.size.x // 2) - 4, int(self.size.x // 2) + 4):
             if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
+                if randint(0, 1):
+                    self.move_timer.stop()
                 self.direction = abs(self.direction) * sign(x)
 
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):

@@ -52,6 +52,7 @@ class Bush(Sprite):
 
     def spread(self) -> None:
         self.detached = not self.detached
+        self.withered = self.detached
 
     def move(self, direction: int) -> None:
         skip = abs(direction)

@@ -20,7 +20,7 @@ class Beetle(Sprite):
         self.move_timer = Timer(lambda: uniform(0.4, 1))
         self.image = texture.beetle.copy()
         self.dead = False
-        self.death_timer = Timer(lambda: 1.5)
+        self.death_timer = Timer(lambda: 1)
         self.digging = True
 
     def update(self) -> None:
@@ -28,7 +28,7 @@ class Beetle(Sprite):
             self.disintegrate()
             return
 
-        if self.pos.y > self.scene.get_y(self.pos.x):
+        if self.pos.y > self.scene.get_y(self.pos.x) + 2:
             self.pos.y -= 6 * self.manager.dt
         else:
             self.pos.y = self.scene.get_y(self.pos.x)
@@ -42,6 +42,8 @@ class Beetle(Sprite):
 
         for x in range(int(-self.size.x // 2) - 2, int(self.size.x // 2) + 2):
             if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
+                if randint(0, 1):
+                    self.move_timer.stop()
                 self.direction = abs(self.direction) * -sign(x)
 
         if self.digging: return
