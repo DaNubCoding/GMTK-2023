@@ -12,14 +12,17 @@ class Bush(Sprite):
     def __init__(self, scene: Scene, x: int, withered: bool = False) -> None:
         super().__init__(scene, Layers.BUSH)
         self.scene.plants[int(x)] = self
+        self.scene.bushes.append(self)
         self.size = VEC(texture.bush.get_size())
         self.pos = VEC(x, -200)
+        self.fixed_x = x
         self.vel = VEC(0, 0)
         self.bright = False
         self.detached = False
         self.detach_timer = LoopTimer(lambda: 1.2)
         self.rot = 0
         self.withered = withered
+        self.replaced_plant = None
 
     def update(self) -> None:
         self.bright = False
@@ -54,17 +57,24 @@ class Bush(Sprite):
     def spread(self) -> None:
         self.detached = not self.detached
         self.withered = self.detached
+        if not self.detached:
+            del self.scene.plants[self.fixed_x]
+            self.fixed_x = int(self.pos.x)
+            if self.fixed_x in self.scene.plants:
+                self.scene.plants[self.fixed_x].kill()
+            self.scene.plants[self.fixed_x] = self
 
     def move(self, direction: int) -> None:
+        if self.detached: return
         skip = abs(direction)
-        x = self.pos.x
+        x = int(self.pos.x)
         for _ in range(skip):
             x += sign(direction)
             while x not in self.scene.plants:
                 x += sign(direction)
                 if abs(x - self.pos.x) > 20:
                     return
-        self.scene.player = self.scene.plants[int(x)]
+        self.scene.player = self.scene.plants[x]
         if self.scene.player.withered:
             self.scene.player.withered = False
             self.scene.energy_display.energy -= 1

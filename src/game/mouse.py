@@ -29,12 +29,15 @@ class Mouse(Sprite):
         self.knockback = False
         self.immune_timer = Timer(lambda: 0.2)
         self.immune = False
+        self.collided = None
         self.flashing = False
         self.flash_count = 0
         self.flash_timer = LoopTimer(lambda: 0.2)
         self.white = False
 
     def update(self) -> None:
+        if not (self.scene.camera.pos.x - 60 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 60): self.kill()
+
         if self.dead:
             self.disintegrate()
             return
@@ -72,18 +75,30 @@ class Mouse(Sprite):
             return
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
             if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
-                self.knockback = True
-                self.flashing = True
-                self.vel.x = -sign(x) * 90
-                self.vel.y = -20
-                self.immune_timer.start()
-                self.immune = True
-                self.health -= 1
-                self.direction = -sign(x) * abs(self.direction)
+                self.damage(x)
                 if self.health == 0:
                     self.dead = True
                     self.death_timer.start()
                     self.collided = self.scene.plants[int(self.pos.x + x)]
+
+        for bush in self.scene.bushes:
+            if not bush.detached: continue
+            if self.pos.x - 16 <= bush.pos.x <= self.pos.x + 16:
+                self.damage(bush.pos.x - self.pos.x)
+                if self.health == 0:
+                    self.dead = True
+                    self.death_timer.start()
+                    self.scene.energy_display.energy += 10
+
+    def damage(self, x: int) -> None:
+        self.knockback = True
+        self.flashing = True
+        self.vel.x = -sign(x) * 90
+        self.vel.y = -20
+        self.immune_timer.start()
+        self.immune = True
+        self.health -= 1
+        self.direction = -sign(x) * abs(self.direction)
 
     def draw(self) -> None:
         if not (self.scene.camera.pos.x - 10 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 10): return
@@ -103,5 +118,5 @@ class Mouse(Sprite):
         if self.death_timer.ended:
             self.kill()
             self.scene.mice_count -= 1
-            if abs(self.scene.player.pos.x - self.collided.pos.x) < self.image.get_width() // 2:
+            if self.collided and abs(self.scene.player.pos.x - self.collided.pos.x) < self.image.get_width() // 2:
                 self.scene.energy_display.energy += 10

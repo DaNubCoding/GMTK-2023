@@ -22,8 +22,11 @@ class Beetle(Sprite):
         self.dead = False
         self.death_timer = Timer(lambda: 1)
         self.digging = True
+        self.collided = None
 
     def update(self) -> None:
+        if not (self.scene.camera.pos.x - 60 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 60): self.kill()
+
         if self.dead:
             self.disintegrate()
             return
@@ -53,6 +56,13 @@ class Beetle(Sprite):
                 self.death_timer.start()
                 self.collided = self.scene.plants[int(self.pos.x + x)]
 
+        for bush in self.scene.bushes:
+            if not bush.detached: continue
+            if self.pos.x - 8 <= bush.pos.x <= self.pos.x + 8:
+                self.dead = True
+                self.death_timer.start()
+                self.scene.energy_display.energy += 2
+
     def draw(self) -> None:
         if not (self.scene.camera.pos.x - 5 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 5): return
         image = pygame.transform.flip(self.image, self.direction < 0, False)
@@ -69,5 +79,5 @@ class Beetle(Sprite):
                 DeathParticle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()
-            if abs(self.scene.player.pos.x - self.collided.pos.x) <= 5:
+            if self.collided and abs(self.scene.player.pos.x - self.collided.pos.x) <= 5:
                 self.scene.energy_display.energy += 2

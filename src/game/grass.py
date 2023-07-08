@@ -28,6 +28,7 @@ class Grass(Sprite):
             self.ani_timer = LoopTimer(lambda: uniform(0.15, 0.3))
 
     def update(self) -> None:
+        if not (self.scene.camera.pos.x - 1 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 1): return
         self.pos.y = self.scene.get_y(self.pos.x)
 
         if self.ani_timer.ended and not self.withered:

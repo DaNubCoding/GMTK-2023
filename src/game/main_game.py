@@ -38,6 +38,7 @@ class MainGame(Scene):
         self.wind_gust_timer = Timer(lambda: uniform(3, 5))
         self.wind_gust_timer.start()
         self.gust = False
+        self.bushes = []
 
     def update(self) -> None:
         self.camera.update()
@@ -91,7 +92,7 @@ class MainGame(Scene):
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, Layers.GUI)
-        self.energy = 20
+        self.energy = 200
         self.energy_timer = LoopTimer(lambda: 10)
 
     def update(self) -> None:
