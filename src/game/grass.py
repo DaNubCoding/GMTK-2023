@@ -44,9 +44,11 @@ class Grass(Sprite):
     def spread(self) -> None:
         if self.scene.energy_display.energy <= 0: return
         self.scene.energy_display.energy -= 1
-        choices = [x for x in range(-5, 6) if self.pos.x + x not in self.scene.plants]
-        if not choices: return
-        Grass(self.scene, self.pos.x + choice(choices))
+        left = [-x for x in range(6) if self.pos.x - x not in self.scene.plants]
+        right = [x for x in range(6) if self.pos.x + x not in self.scene.plants]
+        direction = choice([left, right]) if len(left) == len(right) else (left if len(left) > len(right) else right)
+        if not direction: return
+        Grass(self.scene, self.pos.x + choice(direction))
 
     def move(self, direction: int) -> None:
         skip = abs(direction)

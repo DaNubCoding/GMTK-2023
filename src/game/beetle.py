@@ -61,5 +61,5 @@ class Beetle(Sprite):
                 DeathParticle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()
-            if abs(self.scene.player.pos.x - self.collided.pos.x) < 5:
+            if abs(self.scene.player.pos.x - self.collided.pos.x) <= 5:
                 self.scene.energy_display.energy += 2
