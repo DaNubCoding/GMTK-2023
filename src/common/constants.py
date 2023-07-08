@@ -2,7 +2,7 @@ import pygame
 
 VEC = pygame.math.Vector2
 
-FPS = 144
+FPS = 60
 WIN_WIDTH, WIN_HEIGHT = WIN_SIZE = 512, 384
 WIDTH, HEIGHT = SIZE = WIN_WIDTH // 4, WIN_HEIGHT // 4
 HSIZE = (WIDTH // 2, HEIGHT // 2)
