@@ -6,6 +6,7 @@ import pygame
 from src.management.sprite import Sprite, Layers
 from src.management.scene import Scene
 from src.common.constants import *
+from src.game.grass import Grass
 from src.game.bush import Bush
 
 class Ground(Sprite):
@@ -27,7 +28,9 @@ class Ground(Sprite):
         self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
 
         if abs(x) > 128 and randint(0, 50) == 0:
-            Bush(self.scene, x)
+            Bush(self.scene, x, True)
+        elif abs(x) > 30 and randint(0, 50) == 0:
+            Grass(self.scene, x, True)
 
     def update(self) -> None:
         pass

@@ -11,7 +11,7 @@ from src.common.constants import *
 from src.common.utils import *
 
 class Grass(Sprite):
-    def __init__(self, scene: Scene, x: int) -> None:
+    def __init__(self, scene: Scene, x: int, withered: bool = False) -> None:
         super().__init__(scene, Layers.GRASS)
         self.scene.plants[int(x)] = self
         self.size = texture.grass.size.copy()
@@ -21,11 +21,16 @@ class Grass(Sprite):
         self.ani_timer = LoopTimer(lambda: 0.08)
         self.bright = False
         self.lighten = (randint(0, 15), randint(0, 40), randint(0, 15))
+        self.withered = withered
+        if self.withered:
+            self.sheet = texture.grass
+            self.frame = randint(0, self.sheet.len - 1)
+            self.ani_timer = LoopTimer(lambda: uniform(0.15, 0.3))
 
     def update(self) -> None:
         self.pos.y = self.scene.get_y(self.pos.x)
 
-        if self.ani_timer.ended:
+        if self.ani_timer.ended and not self.withered:
             self.frame += 1
             self.frame %= self.sheet.len
             if self.frame == 0:
@@ -38,6 +43,9 @@ class Grass(Sprite):
 
     def draw(self) -> None:
         image = self.sheet[self.frame].copy()
+        if self.withered:
+            (surf := pygame.Surface(image.get_size())).fill((140, 0, 0))
+            image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
         if self.bright:
             (surf := pygame.Surface(image.get_size())).fill((80, 80, 80))
             image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
@@ -64,3 +72,6 @@ class Grass(Sprite):
                 if abs(x - self.pos.x) > 8:
                     return
         self.scene.player = self.scene.plants[int(x)]
+        if self.scene.player.withered:
+            self.scene.player.withered = False
+            self.scene.energy_display.energy -= 1

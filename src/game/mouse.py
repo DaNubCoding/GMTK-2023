@@ -37,11 +37,11 @@ class Mouse(Sprite):
             self.pos.x += self.direction * self.manager.dt
 
         for x in range(int(-self.size.x // 2) - 4, int(self.size.x // 2) + 4):
-            if int(self.pos.x + x) in self.scene.plants:
+            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
                 self.direction = abs(self.direction) * sign(x)
 
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
-            if int(self.pos.x + x) in self.scene.plants:
+            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
                 self.dead = True
                 self.death_timer.start()
                 self.collided = self.scene.plants[int(self.pos.x + x)]

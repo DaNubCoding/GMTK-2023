@@ -7,7 +7,7 @@ class Camera:
         self.scene = scene
         self.manager = scene.manager
         self.player = scene.player
-        self.true_pos = self.player.pos.copy()
+        self.true_pos = self.player.pos.copy() - VEC(SIZE) // 2
 
     def update(self) -> None:
         self.player = self.scene.player

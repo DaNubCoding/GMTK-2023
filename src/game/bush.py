@@ -9,7 +9,7 @@ from src.common.constants import *
 from src.common.utils import *
 
 class Bush(Sprite):
-    def __init__(self, scene: Scene, x: int) -> None:
+    def __init__(self, scene: Scene, x: int, withered: bool = False) -> None:
         super().__init__(scene, Layers.BUSH)
         self.scene.plants[int(x)] = self
         self.size = VEC(texture.bush.get_size())
@@ -19,6 +19,7 @@ class Bush(Sprite):
         self.detached = False
         self.detach_timer = LoopTimer(lambda: 1.2)
         self.rot = 0
+        self.withered = withered
 
     def update(self) -> None:
         self.bright = False
@@ -38,6 +39,9 @@ class Bush(Sprite):
 
     def draw(self) -> None:
         image = texture.bush.copy()
+        if self.withered:
+            (surf := pygame.Surface(image.get_size())).fill((140, 0, 0))
+            image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
         if self.bright:
             (surf := pygame.Surface(image.get_size())).fill((60, 60, 60))
             image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
@@ -59,3 +63,6 @@ class Bush(Sprite):
                 if abs(x - self.pos.x) > 20:
                     return
         self.scene.player = self.scene.plants[int(x)]
+        if self.scene.player.withered:
+            self.scene.player.withered = False
+            self.scene.energy_display.energy -= 1

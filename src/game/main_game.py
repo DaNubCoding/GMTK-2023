@@ -21,10 +21,10 @@ class MainGame(Scene):
         self.plants = {}
 
         self.grounds = {}
-        for x in range(WIDTH + 1):
+        for x in range(-WIDTH // 2, WIDTH // 2 + 1):
             Ground(self, x)
 
-        self.player = Grass(self, 32)
+        self.player = Grass(self, 0)
         self.camera = Camera(self)
         self.energy_display = EnergyDisplay(self)
         self.mice_timer = LoopTimer(lambda: uniform(6, 10))
