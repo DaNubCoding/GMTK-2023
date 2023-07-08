@@ -7,6 +7,7 @@ from abc import ABC as AbstractClass
 from enum import Enum, auto
 
 class Layers(Enum):
+    WIND = auto()
     GROUND = auto()
     ANIMALS = auto()
     PLANTS = auto()

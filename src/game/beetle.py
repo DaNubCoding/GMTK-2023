@@ -4,7 +4,7 @@ import pygame
 
 from src.management.sprite import Sprite, Layers
 from src.common.timer import LoopTimer, Timer
-from src.game.death_particle import Particle
+from src.game.death_particle import DeathParticle
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
@@ -40,7 +40,7 @@ class Beetle(Sprite):
             self.pos.x += self.direction * self.manager.dt
 
         if self.digging: return
-        for x in range(int(-self.size.x // 2), int(self.size.x // 2)):
+        for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2)):
             if int(self.pos.x + x) in self.scene.plants:
                 self.dead = True
                 self.death_timer.start()
@@ -58,7 +58,7 @@ class Beetle(Sprite):
             color = self.image.get_at(pos)
             self.image.set_at(pos, (0, 0, 0, 0))
             if color != (0, 0, 0, 0):
-                Particle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
+                DeathParticle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()
             if abs(self.scene.player.pos.x - self.collided.pos.x) < self.image.get_width() // 2:

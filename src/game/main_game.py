@@ -4,8 +4,9 @@ from math import *
 import pygame
 
 from src.management.sprite import Sprite, Layers
+from src.game.wind_particle import WindParticle
+from src.common.timer import LoopTimer, Timer
 from src.management.scene import Scene
-from src.common.timer import LoopTimer
 import src.common.textures as texture
 from src.game.ground import Ground
 from src.game.camera import Camera
@@ -29,10 +30,19 @@ class MainGame(Scene):
         self.mice_timer = LoopTimer(lambda: uniform(6, 10))
         self.mice_count = 0
         self.beetle_timer = LoopTimer(lambda: uniform(6, 10))
+        self.wind_speed = choice([-50, 50])
+        self.wind_speed_timer = LoopTimer(lambda: uniform(4, 16))
+        self.wind = Wind(self)
+        self.wind_particle_interval = 0.2
+        self.wind_particle_timer = LoopTimer(lambda: self.wind_particle_interval)
+        self.wind_gust_start_timer = LoopTimer(lambda: uniform(8, 12))
+        self.wind_gust_timer = Timer(lambda: uniform(3, 5))
+        self.wind_gust_timer.start()
 
     def update(self) -> None:
         self.camera.update()
         super().update()
+
         keys = pygame.key.get_pressed()
         if KEYDOWN in self.manager.events:
             if self.manager.events[KEYDOWN].key == K_SPACE:
@@ -51,6 +61,17 @@ class MainGame(Scene):
 
         if self.beetle_timer.ended:
             Beetle(self, self.camera.pos.x + randint(16, WIDTH - 16))
+
+        if self.wind_particle_timer.ended:
+            WindParticle(self)
+            if self.wind_gust_start_timer.ended:
+                self.wind_gust_timer.start()
+            if not self.wind_gust_timer.ended:
+                for _ in range(5):
+                    WindParticle(self)
+
+        if self.wind_speed_timer.ended:
+            self.wind_speed = choice([-50, 50])
 
     def draw(self) -> None:
         self.manager.screen.fill(SKY_COLOR)
@@ -78,3 +99,17 @@ class EnergyDisplay(Sprite):
         self.manager.screen.blit(texture.energy, (3, 2))
         text = ENERGY_FONT.render(f"{self.energy}", False, (0, 0, 0))
         self.manager.screen.blit(text, (24, 0))
+
+class Wind(Sprite):
+    def __init__(self, scene: Scene) -> None:
+        super().__init__(scene, Layers.WIND)
+        self.image = pygame.Surface(SIZE, SRCALPHA)
+        self.trans_surf = pygame.Surface(SIZE, SRCALPHA)
+        self.trans_surf.fill((0, 0, 0, 1))
+
+    def update(self) -> None:
+        pass
+
+    def draw(self) -> None:
+        self.image.blit(self.trans_surf, (0, 0), special_flags=BLEND_RGBA_SUB)
+        self.manager.screen.blit(self.image, (0, 0))

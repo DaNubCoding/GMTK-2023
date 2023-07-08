@@ -4,7 +4,7 @@ from src.common.timer import Timer
 from src.common.constants import *
 from src.common.utils import *
 
-class Particle(Sprite):
+class DeathParticle(Sprite):
     def __init__(self, scene: Scene, pos: tuple[int, int], color: tuple[int, int, int]) -> None:
         super().__init__(scene, Layers.ANIMALS)
         self.color = color

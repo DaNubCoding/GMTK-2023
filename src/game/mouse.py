@@ -4,7 +4,7 @@ import pygame
 
 from src.management.sprite import Sprite, Layers
 from src.common.timer import LoopTimer, Timer
-from src.game.death_particle import Particle
+from src.game.death_particle import DeathParticle
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
@@ -51,7 +51,7 @@ class Mouse(Sprite):
             color = self.image.get_at(pos)
             self.image.set_at(pos, (0, 0, 0, 0))
             if color != (0, 0, 0, 0):
-                Particle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
+                DeathParticle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()
             self.scene.mice_count -= 1
