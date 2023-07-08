@@ -33,11 +33,11 @@ class MainGame(Scene):
         self.wind_speed = choice([-50, 50])
         self.wind_speed_timer = LoopTimer(lambda: uniform(4, 16))
         self.wind = Wind(self)
-        self.wind_particle_interval = 0.2
-        self.wind_particle_timer = LoopTimer(lambda: self.wind_particle_interval)
+        self.wind_particle_timer = LoopTimer(lambda: 0.2)
         self.wind_gust_start_timer = LoopTimer(lambda: uniform(8, 12))
         self.wind_gust_timer = Timer(lambda: uniform(3, 5))
         self.wind_gust_timer.start()
+        self.gust = False
 
     def update(self) -> None:
         self.camera.update()
@@ -66,9 +66,12 @@ class MainGame(Scene):
             WindParticle(self)
             if self.wind_gust_start_timer.ended:
                 self.wind_gust_timer.start()
+                self.gust = True
             if not self.wind_gust_timer.ended:
                 for _ in range(5):
                     WindParticle(self)
+            else:
+                self.gust = False
 
         if self.wind_speed_timer.ended:
             self.wind_speed = choice([-50, 50])
