@@ -16,6 +16,7 @@ class SpriteSheet(list):
         self.len = len(self)
 
 grass = SpriteSheet("grass.png", 3)
+grass_sprout = SpriteSheet("grass_sprout.png", 3)
 energy = load_image("energy.png")
 mouse = load_image("mouse.png")
 bush = load_image("bush.png")
