@@ -19,14 +19,14 @@ class Ground(Sprite):
             pos = (0, randint(0, self.surface.get_height() - 1))
             n = randint(-7, 15)
             self.surface.set_at(pos, tuple(map(lambda x: min(x + n + randint(-3, 3), 255), self.surface.get_at(pos))))
-        (surf := pygame.Surface((1, randint(1, 2)))).fill((5, 5, 5))
+        (surf := pygame.Surface((1, randint(1, 3)))).fill((7, 7, 7))
         self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
-        (surf := pygame.Surface((1, randint(3, 5)))).fill((5, 5, 5))
+        (surf := pygame.Surface((1, randint(5, 9)))).fill((6, 6, 6))
         self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
-        (surf := pygame.Surface((1, randint(7, 10)))).fill((5, 5, 5))
+        (surf := pygame.Surface((1, randint(11, 15)))).fill((5, 5, 5))
         self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
 
-        if abs(x) > 150 and randint(0, 50) == 0:
+        if abs(x) > 128 and randint(0, 50) == 0:
             Bush(self.scene, x)
 
     def update(self) -> None:

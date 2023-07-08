@@ -9,6 +9,7 @@ from src.common.timer import LoopTimer
 import src.common.textures as texture
 from src.game.ground import Ground
 from src.game.camera import Camera
+from src.game.beetle import Beetle
 from src.common.constants import *
 from src.game.mouse import Mouse
 from src.game.grass import Grass
@@ -26,6 +27,8 @@ class MainGame(Scene):
         self.camera = Camera(self)
         self.energy_display = EnergyDisplay(self)
         self.mice_timer = LoopTimer(lambda: uniform(6, 10))
+        self.mice_count = 0
+        self.beetle_timer = LoopTimer(lambda: uniform(6, 10))
 
     def update(self) -> None:
         self.camera.update()
@@ -43,8 +46,11 @@ class MainGame(Scene):
             if self.camera.pos.x - 25 + x not in self.grounds:
                 Ground(self, self.camera.pos.x - 25 + x)
 
-        if self.mice_timer.ended:
+        if abs(self.camera.pos.x + WIDTH // 2) > 64 and self.mice_timer.ended and self.mice_count < 2:
             Mouse(self, self.camera.pos.x + choice([-12, WIDTH + 12]))
+
+        if self.beetle_timer.ended:
+            Beetle(self, self.camera.pos.x + randint(16, WIDTH - 16))
 
     def draw(self) -> None:
         self.manager.screen.fill(SKY_COLOR)
@@ -53,7 +59,10 @@ class MainGame(Scene):
         # or here
 
     def get_y(self, x: int) -> float:
-        return self.grounds[floor(x - 0.5)].pos.y
+        try:
+            return self.grounds[floor(x - 0.5)].pos.y
+        except KeyError:
+            return 0
 
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:

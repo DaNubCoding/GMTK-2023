@@ -19,5 +19,6 @@ grass = SpriteSheet("grass.png", 3)
 energy = load_image("energy.png")
 mouse = load_image("mouse.png")
 bush = load_image("bush.png")
+beetle = load_image("beetle.png")
 
 pygame.display.quit()
