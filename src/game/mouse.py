@@ -8,6 +8,7 @@ from src.game.death_particle import DeathParticle
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
+from src.common.utils import *
 
 class Mouse(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
@@ -34,6 +35,10 @@ class Mouse(Sprite):
             self.direction = uniform(-20, -15) if randint(0, 1) else uniform(15, 20)
         if not self.move_timer.ended:
             self.pos.x += self.direction * self.manager.dt
+
+        for x in range(int(-self.size.x // 2) - 4, int(self.size.x // 2) + 4):
+            if int(self.pos.x + x) in self.scene.plants:
+                self.direction = abs(self.direction) * sign(x)
 
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
             if int(self.pos.x + x) in self.scene.plants:

@@ -8,6 +8,7 @@ from src.game.death_particle import DeathParticle
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
+from src.common.utils import *
 
 class Beetle(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
@@ -38,6 +39,10 @@ class Beetle(Sprite):
             self.direction = uniform(-20, -15) if randint(0, 1) else uniform(15, 20)
         if not self.move_timer.ended and not self.digging:
             self.pos.x += self.direction * self.manager.dt
+
+        for x in range(int(-self.size.x // 2) - 2, int(self.size.x // 2) + 2):
+            if int(self.pos.x + x) in self.scene.plants:
+                self.direction = abs(self.direction) * -sign(x)
 
         if self.digging: return
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
