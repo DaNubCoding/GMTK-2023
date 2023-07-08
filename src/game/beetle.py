@@ -54,6 +54,7 @@ class Beetle(Sprite):
                 self.collided = self.scene.plants[int(self.pos.x + x)]
 
     def draw(self) -> None:
+        if not (self.scene.camera.pos.x - 5 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 5): return
         image = pygame.transform.flip(self.image, self.direction < 0, False)
         if self.digging:
             image = pygame.transform.rotate(image, -90)

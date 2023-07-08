@@ -86,7 +86,7 @@ class MainGame(Scene):
         try:
             return self.grounds[floor(x - 0.5)].pos.y
         except KeyError:
-            return 0
+            return -10
 
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:

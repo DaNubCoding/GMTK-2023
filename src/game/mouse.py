@@ -49,6 +49,7 @@ class Mouse(Sprite):
                 self.collided = self.scene.plants[int(self.pos.x + x)]
 
     def draw(self) -> None:
+        if not (self.scene.camera.pos.x - 10 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 10): return
         image = pygame.transform.flip(self.image, self.direction < 0, False)
         self.manager.screen.blit(image, self.pos - (self.size.x / 2, self.size.y) - self.scene.camera.pos)
 
