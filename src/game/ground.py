@@ -10,14 +10,14 @@ from src.common.constants import *
 class Ground(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
         super().__init__(scene, Layers.GROUND)
-        self.scene.grounds[x] = self
+        self.scene.grounds[int(x)] = self
         self.pos = VEC(x, noise2(x * 0.04, 0.5) * 14 + 60)
         self.surface = pygame.Surface((1, 50), SRCALPHA)
         self.surface.fill(GROUND_COLOR)
-        for _ in range(12):
+        for _ in range(15):
             pos = (0, randint(0, self.surface.get_height() - 1))
-            n = randint(0, 30)
-            self.surface.set_at(pos, tuple(map(lambda x: min(x + n + randint(-5, 5), 255), self.surface.get_at(pos))))
+            n = randint(-7, 15)
+            self.surface.set_at(pos, tuple(map(lambda x: min(x + n + randint(-3, 3), 255), self.surface.get_at(pos))))
         (surf := pygame.Surface((1, randint(1, 2)))).fill((5, 5, 5))
         self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
         (surf := pygame.Surface((1, randint(3, 5)))).fill((5, 5, 5))
