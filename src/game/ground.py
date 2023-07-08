@@ -6,6 +6,7 @@ import pygame
 from src.management.sprite import Sprite, Layers
 from src.management.scene import Scene
 from src.common.constants import *
+from src.game.bush import Bush
 
 class Ground(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
@@ -25,8 +26,12 @@ class Ground(Sprite):
         (surf := pygame.Surface((1, randint(7, 10)))).fill((5, 5, 5))
         self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
 
+        if abs(x) > 150 and randint(0, 50) == 0:
+            Bush(self.scene, x)
+
     def update(self) -> None:
         pass
 
     def draw(self) -> None:
+        if not (self.scene.camera.pos.x <= self.pos.x <= self.scene.camera.pos.x + WIDTH): return
         self.manager.screen.blit(self.surface, self.pos - self.scene.camera.pos)

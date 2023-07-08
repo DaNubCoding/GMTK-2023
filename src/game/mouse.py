@@ -35,10 +35,10 @@ class Mouse(Sprite):
             self.pos.x += self.direction * self.manager.dt
 
         for x in range(int(-self.size.x // 2), int(self.size.x // 2)):
-            if int(self.pos.x + x) in self.scene.grasses:
+            if int(self.pos.x + x) in self.scene.plants:
                 self.dead = True
                 self.death_timer.start()
-                self.collided = self.scene.grasses[int(self.pos.x + x)]
+                self.collided = self.scene.plants[int(self.pos.x + x)]
 
     def draw(self) -> None:
         image = pygame.transform.flip(self.image, self.direction < 0, False)

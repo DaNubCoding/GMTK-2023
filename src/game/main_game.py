@@ -16,13 +16,13 @@ from src.game.grass import Grass
 class MainGame(Scene):
     def setup(self) -> None:
         super().setup()
-        self.grasses = {}
+        self.plants = {}
 
         self.grounds = {}
         for x in range(WIDTH + 1):
             Ground(self, x)
 
-        self.player = Grass(self, 64)
+        self.player = Grass(self, 32)
         self.camera = Camera(self)
         self.energy_display = EnergyDisplay(self)
         self.mice_timer = LoopTimer(lambda: uniform(6, 10))
@@ -58,7 +58,7 @@ class MainGame(Scene):
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, Layers.GUI)
-        self.energy = 10
+        self.energy = float("inf")
         self.energy_timer = LoopTimer(lambda: 10)
 
     def update(self) -> None:
