@@ -56,7 +56,8 @@ class MainGame(Scene):
             if self.camera.pos.x - 25 + x not in self.grounds:
                 Ground(self, self.camera.pos.x - 25 + x)
 
-        if abs(self.camera.pos.x + WIDTH // 2) > 64 and self.mice_timer.ended and self.mice_count < 2:
+        # if abs(self.camera.pos.x + WIDTH // 2) > 64 and self.mice_timer.ended and self.mice_count < 2:
+        if self.mice_timer.ended:
             Mouse(self, self.camera.pos.x + choice([-12, WIDTH + 12]))
 
         if self.beetle_timer.ended:
@@ -91,7 +92,7 @@ class MainGame(Scene):
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, Layers.GUI)
-        self.energy = 10
+        self.energy = 20
         self.energy_timer = LoopTimer(lambda: 10)
 
     def update(self) -> None:

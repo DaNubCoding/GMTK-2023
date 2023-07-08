@@ -1,3 +1,4 @@
+from pygame.locals import *
 from random import *
 from math import *
 import pygame
@@ -16,41 +17,80 @@ class Mouse(Sprite):
         self.scene.mice_count += 1
         self.size = VEC(texture.mouse.get_size())
         self.pos = VEC(x, self.scene.get_y(x))
+        self.vel = VEC(0, 0)
         self.direction = 20 if self.pos.x < self.scene.camera.pos.x else -20
         self.start_move_timer = LoopTimer(lambda: uniform(1, 5))
         self.move_timer = Timer(lambda: uniform(0.4, 1))
         self.image = texture.mouse.copy()
         self.dead = False
         self.death_timer = Timer(lambda: 1.5)
+        self.health = 2
+        self.in_grass = False
+        self.knockback = False
+        self.immune_timer = Timer(lambda: 0.2)
+        self.immune = False
+        self.flashing = False
+        self.flash_count = 0
+        self.flash_timer = LoopTimer(lambda: 0.2)
+        self.white = False
 
     def update(self) -> None:
         if self.dead:
             self.disintegrate()
             return
 
-        self.pos.y = self.scene.get_y(self.pos.x)
-
         if self.start_move_timer.ended:
             self.move_timer.start()
             self.direction = uniform(-20, -15) if randint(0, 1) else uniform(15, 20)
         if not self.move_timer.ended:
             self.pos.x += self.direction * self.manager.dt
+        if self.knockback:
+            self.vel.x -= sign(self.vel.x) * 350 * self.manager.dt
+            self.vel.y += GRAVITY * self.manager.dt
+            self.pos += self.vel * self.manager.dt
+            if self.pos.y > self.scene.get_y(self.pos.x):
+                self.knockback = False
+        else:
+            self.pos.y = self.scene.get_y(self.pos.x)
 
-        for x in range(int(-self.size.x // 2) - 4, int(self.size.x // 2) + 4):
-            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
+        for x in range(int(-self.size.x // 2) - 2, int(self.size.x // 2) + 2):
+            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and self.pos.y < self.scene.get_y(self.pos.x) + 6:
                 if randint(0, 1):
                     self.move_timer.stop()
-                self.direction = abs(self.direction) * sign(x)
+                self.direction = abs(self.direction) * -sign(x)
 
+        if self.flashing and self.flash_timer.ended:
+            self.flash_count += 1
+            self.white = not self.white
+            if self.flash_count > 6:
+                self.flashing = False
+                self.white = False
+
+        if self.immune:
+            if self.immune_timer.ended:
+                self.immune = False
+            return
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
             if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
-                self.dead = True
-                self.death_timer.start()
-                self.collided = self.scene.plants[int(self.pos.x + x)]
+                self.knockback = True
+                self.flashing = True
+                self.vel.x = -sign(x) * 90
+                self.vel.y = -20
+                self.immune_timer.start()
+                self.immune = True
+                self.health -= 1
+                self.direction = -sign(x) * abs(self.direction)
+                if self.health == 0:
+                    self.dead = True
+                    self.death_timer.start()
+                    self.collided = self.scene.plants[int(self.pos.x + x)]
 
     def draw(self) -> None:
         if not (self.scene.camera.pos.x - 10 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 10): return
         image = pygame.transform.flip(self.image, self.direction < 0, False)
+        if self.white:
+            (surf := pygame.Surface(image.get_size())).fill((255, 255, 255))
+            image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
         self.manager.screen.blit(image, self.pos - (self.size.x / 2, self.size.y) - self.scene.camera.pos)
 
     def disintegrate(self) -> None:

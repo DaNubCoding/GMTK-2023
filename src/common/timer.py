@@ -11,6 +11,7 @@ class Timer:
     def start(self) -> None:
         self.started = True
         self._start = time.time()
+        self.period = self.func()
 
     def stop(self) -> None:
         self.period = 0
