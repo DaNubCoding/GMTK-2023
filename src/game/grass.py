@@ -51,6 +51,6 @@ class Grass(Sprite):
         x = self.pos.x + direction
         while x not in self.scene.grasses:
             x += direction
-            if not (0 <= x < WIDTH):
+            if abs(x - self.pos.x) > 20:
                 return
         self.scene.player = self.scene.grasses[x]

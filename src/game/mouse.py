@@ -14,11 +14,10 @@ class Mouse(Sprite):
         super().__init__(scene, Layers.ANIMALS)
         self.size = VEC(texture.mouse.get_size())
         self.pos = VEC(x, self.scene.get_y(x))
-        self.direction = 0
+        self.direction = 20 if self.pos.x < self.scene.camera.pos.x else -20
         self.start_move_timer = LoopTimer(lambda: uniform(1, 5))
-        self.start_move_timer.start += 2
         self.move_timer = Timer(lambda: uniform(0.4, 1))
-        self.image = texture.mouse
+        self.image = texture.mouse.copy()
         self.dead = False
         self.death_timer = Timer(lambda: 1.5)
 
@@ -53,3 +52,4 @@ class Mouse(Sprite):
                 Particle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()
+            self.scene.energy_display.energy += 10

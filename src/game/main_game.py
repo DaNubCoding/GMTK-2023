@@ -1,9 +1,11 @@
 from pygame.locals import *
+from random import *
 from math import *
 import pygame
 
 from src.management.sprite import Sprite, Layers
 from src.management.scene import Scene
+from src.common.timer import LoopTimer
 import src.common.textures as texture
 from src.game.ground import Ground
 from src.game.camera import Camera
@@ -23,7 +25,7 @@ class MainGame(Scene):
         self.player = Grass(self, 64)
         self.camera = Camera(self)
         self.energy_display = EnergyDisplay(self)
-        Mouse(self, 50)
+        self.mice_timer = LoopTimer(lambda: uniform(5, 10))
 
     def update(self) -> None:
         self.camera.update()
@@ -35,6 +37,13 @@ class MainGame(Scene):
                 self.player.move(-1)
             elif self.manager.events[KEYDOWN].key == K_RIGHT:
                 self.player.move(1)
+
+        for x in range(WIDTH + 50):
+            if self.camera.pos.x - 25 + x not in self.grounds:
+                Ground(self, self.camera.pos.x - 25 + x)
+
+        if self.mice_timer.ended:
+            Mouse(self, self.camera.pos.x + choice([-12, WIDTH + 12]))
 
     def draw(self) -> None:
         self.manager.screen.fill(SKY_COLOR)
