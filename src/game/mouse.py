@@ -35,7 +35,7 @@ class Mouse(Sprite):
         if not self.move_timer.ended:
             self.pos.x += self.direction * self.manager.dt
 
-        for x in range(int(-self.size.x // 2), int(self.size.x // 2)):
+        for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
             if int(self.pos.x + x) in self.scene.plants:
                 self.dead = True
                 self.death_timer.start()

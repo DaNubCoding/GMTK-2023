@@ -40,7 +40,7 @@ class Beetle(Sprite):
             self.pos.x += self.direction * self.manager.dt
 
         if self.digging: return
-        for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2)):
+        for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
             if int(self.pos.x + x) in self.scene.plants:
                 self.dead = True
                 self.death_timer.start()
@@ -61,5 +61,5 @@ class Beetle(Sprite):
                 DeathParticle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()
-            if abs(self.scene.player.pos.x - self.collided.pos.x) < self.image.get_width() // 2:
-                self.scene.energy_display.energy += 10
+            if abs(self.scene.player.pos.x - self.collided.pos.x) < 5:
+                self.scene.energy_display.energy += 2

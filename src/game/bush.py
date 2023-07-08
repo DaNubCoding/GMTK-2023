@@ -1,4 +1,5 @@
 from pygame.locals import *
+from math import *
 
 from src.management.sprite import Sprite, Layers
 from src.management.scene import Scene
@@ -9,14 +10,15 @@ from src.common.utils import *
 
 class Bush(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
-        super().__init__(scene, Layers.PLANTS)
+        super().__init__(scene, Layers.BUSH)
         self.scene.plants[int(x)] = self
         self.size = VEC(texture.bush.get_size())
         self.pos = VEC(x, -200)
         self.vel = VEC(0, 0)
         self.bright = False
         self.detached = False
-        self.detach_timer = LoopTimer(lambda: 0.5)
+        self.detach_timer = LoopTimer(lambda: 1.2)
+        self.rot = 0
 
     def update(self) -> None:
         self.bright = False
@@ -39,7 +41,10 @@ class Bush(Sprite):
         if self.bright:
             (surf := pygame.Surface(image.get_size())).fill((60, 60, 60))
             image.blit(surf, (0, 0), special_flags=BLEND_RGB_ADD)
-        self.manager.screen.blit(image, self.pos - (self.size.x / 2, self.size.y) - self.scene.camera.pos)
+        if self.detached:
+            self.rot += -degrees(self.vel.x * self.manager.dt / (texture.bush.get_width() // 2))
+            image = pygame.transform.rotate(image, self.rot)
+        self.manager.screen.blit(image, self.pos - (image.get_width() / 2, image.get_height() / 2 + self.size.y / 2) - self.scene.camera.pos)
 
     def spread(self) -> None:
         self.detached = not self.detached

@@ -11,7 +11,7 @@ class WindParticle(Sprite):
         self.pos = VEC(randint(-100, WIDTH + 100), -5)
         self.vel = VEC(0, 0)
         self.image = pygame.Surface((1, 1), SRCALPHA)
-        self.image.fill((230, 230, 230, 20))
+        self.image.fill((230, 230, 230, 25))
         self.factor = uniform(0.7, 1.3)
 
     def update(self) -> None:

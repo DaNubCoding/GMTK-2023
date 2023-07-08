@@ -10,7 +10,8 @@ class Layers(Enum):
     WIND = auto()
     GROUND = auto()
     ANIMALS = auto()
-    PLANTS = auto()
+    GRASS = auto()
+    BUSH = auto()
     GUI = auto()
 
 class Sprite(AbstractClass):

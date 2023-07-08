@@ -12,7 +12,7 @@ from src.common.utils import *
 
 class Grass(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
-        super().__init__(scene, Layers.PLANTS)
+        super().__init__(scene, Layers.GRASS)
         self.scene.plants[int(x)] = self
         self.size = texture.grass.size.copy()
         self.pos = VEC(x, -200)

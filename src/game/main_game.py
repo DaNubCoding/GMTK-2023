@@ -29,7 +29,7 @@ class MainGame(Scene):
         self.energy_display = EnergyDisplay(self)
         self.mice_timer = LoopTimer(lambda: uniform(6, 10))
         self.mice_count = 0
-        self.beetle_timer = LoopTimer(lambda: uniform(6, 10))
+        self.beetle_timer = LoopTimer(lambda: uniform(4, 7))
         self.wind_speed = choice([-50, 50])
         self.wind_speed_timer = LoopTimer(lambda: uniform(4, 16))
         self.wind = Wind(self)
@@ -91,7 +91,7 @@ class MainGame(Scene):
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, Layers.GUI)
-        self.energy = float("inf")
+        self.energy = 10
         self.energy_timer = LoopTimer(lambda: 10)
 
     def update(self) -> None:
@@ -108,11 +108,13 @@ class Wind(Sprite):
         super().__init__(scene, Layers.WIND)
         self.image = pygame.Surface(SIZE, SRCALPHA)
         self.trans_surf = pygame.Surface(SIZE, SRCALPHA)
-        self.trans_surf.fill((0, 0, 0, 1))
+        self.trans_surf.fill((0, 0, 0, 3))
+        self.fill_timer = LoopTimer(lambda: 0.05)
 
     def update(self) -> None:
         pass
 
     def draw(self) -> None:
-        self.image.blit(self.trans_surf, (0, 0), special_flags=BLEND_RGBA_SUB)
+        if self.fill_timer.ended:
+            self.image.blit(self.trans_surf, (0, 0), special_flags=BLEND_RGBA_SUB)
         self.manager.screen.blit(self.image, (0, 0))
