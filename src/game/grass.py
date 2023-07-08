@@ -42,6 +42,7 @@ class Grass(Sprite):
             self.bright = True
 
     def draw(self) -> None:
+        if not (self.scene.camera.pos.x - 1 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 1): return
         image = self.sheet[self.frame].copy()
         if self.withered:
             (surf := pygame.Surface(image.get_size())).fill((140, 0, 0))

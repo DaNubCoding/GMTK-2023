@@ -38,6 +38,7 @@ class Bush(Sprite):
         self.pos.y = self.scene.get_y(self.pos.x)
 
     def draw(self) -> None:
+        if not (self.scene.camera.pos.x - 10 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 10): return
         image = texture.bush.copy()
         if self.withered:
             (surf := pygame.Surface(image.get_size())).fill((140, 0, 0))
