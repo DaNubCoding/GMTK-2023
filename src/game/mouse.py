@@ -4,6 +4,7 @@ import pygame
 
 from src.management.sprite import Sprite, Layers
 from src.common.timer import LoopTimer, Timer
+from src.game.death_particle import Particle
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
@@ -44,7 +45,11 @@ class Mouse(Sprite):
         self.manager.screen.blit(image, self.pos - (self.size.x / 2, self.size.y) - self.scene.camera.pos)
 
     def disintegrate(self) -> None:
-        for _ in range(ceil(self.death_timer.progress * 10)):
-            self.image.set_at((randint(0, self.image.get_width()), randint(0, self.image.get_height())), (0, 0, 0, 0))
+        for _ in range(ceil(self.death_timer.progress * 8)):
+            pos = (randint(0, self.image.get_width() - 1), randint(0, self.image.get_height() - 1))
+            color = self.image.get_at(pos)
+            self.image.set_at(pos, (0, 0, 0, 0))
+            if color != (0, 0, 0, 0):
+                Particle(self.scene, self.pos + pos - (self.size.x / 2, self.size.y), color)
         if self.death_timer.ended:
             self.kill()

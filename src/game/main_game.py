@@ -23,7 +23,7 @@ class MainGame(Scene):
         self.player = Grass(self, 64)
         self.camera = Camera(self)
         self.energy_display = EnergyDisplay(self)
-        Mouse(self, 40)
+        Mouse(self, 50)
 
     def update(self) -> None:
         self.camera.update()
@@ -42,7 +42,7 @@ class MainGame(Scene):
         super().draw()
         # or here
 
-    def get_y(self, x: int) -> None:
+    def get_y(self, x: int) -> float:
         return self.grounds[floor(x - 0.5)].pos.y
 
 class EnergyDisplay(Sprite):
