@@ -16,6 +16,9 @@ from src.common.utils import *
 class Mouse(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
         super().__init__(scene, Layers.ANIMALS)
+        for x in range(x - 8, x + 9):
+            if x in self.scene.plants:
+                self.kill()
         self.scene.mice_count += 1
         self.size = VEC(texture.mouse.get_size())
         self.pos = VEC(x, self.scene.get_y(x))
@@ -37,6 +40,7 @@ class Mouse(Sprite):
         self.flash_timer = LoopTimer(lambda: 0.2)
         self.white = False
         self.dandify = False
+        self.sound_timer = LoopTimer(lambda: 1.5)
 
     def update(self) -> None:
         if not (self.scene.camera.pos.x - 60 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 60): self.kill()
@@ -50,6 +54,8 @@ class Mouse(Sprite):
             self.direction = uniform(-20, -15) if randint(0, 1) else uniform(15, 20)
         if not self.move_timer.ended:
             self.pos.x += self.direction * self.manager.dt
+            if self.sound_timer.ended:
+                choice(audio.footsteps).play()
         if self.knockback:
             self.vel.x -= sign(self.vel.x) * 350 * self.manager.dt
             self.vel.y += GRAVITY * self.manager.dt

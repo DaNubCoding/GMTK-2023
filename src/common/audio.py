@@ -6,13 +6,14 @@ def load_sound(file: str) -> pygame.mixer.Sound:
 
 pygame.mixer.pre_init(buffer=32)
 pygame.mixer.init(buffer=32)
-pygame.mixer.set_num_channels(100)
+pygame.mixer.set_num_channels(21)
 
 class Sound(pygame.mixer.Sound):
     i = 0
     def play(self, loops: int = 0) -> None:
         pygame.mixer.Channel(self.i).play(self, loops=loops)
         self.__class__.i += 1
+        self.__class__.i %= 20
 
 pygame.mixer.music.load("res/audio/music.wav")
 menu_music = load_sound("menu_music.wav")
