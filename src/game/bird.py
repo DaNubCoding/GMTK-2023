@@ -18,7 +18,7 @@ class Bird(Sprite):
         super().__init__(scene, Layers.ANIMALS)
         self.scene.bird_count += 1
         self.size = texture.bird.size.copy()
-        self.pos = VEC(x, -30)
+        self.pos = VEC(x, 200)
         self.vel = VEC(0, 0)
         self.target = self.pos + (randint(-10, 10), randint(40, 60))
         self.frame = 0
