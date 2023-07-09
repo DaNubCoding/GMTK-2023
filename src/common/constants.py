@@ -1,5 +1,7 @@
 import pygame
 
+from src.common.exe import pathof
+
 VEC = pygame.math.Vector2
 
 FPS = 144
@@ -10,5 +12,5 @@ GROUND_COLOR = (110, 67, 37)
 GRAVITY = 90
 
 pygame.font.init()
-ENERGY_FONT = pygame.font.Font("res/fonts/PixgamerRegular-OVD6A.ttf", 16)
-MAIN_FONT = pygame.font.Font("res/fonts/slkscr.ttf", 9)
+ENERGY_FONT = pygame.font.Font(pathof("res/fonts/PixgamerRegular-OVD6A.ttf"), 16)
+MAIN_FONT = pygame.font.Font(pathof("res/fonts/slkscr.ttf"), 9)
