@@ -94,7 +94,7 @@ class MainGame(Scene):
             self.wind_speed = choice([-50, 50])
 
     def draw(self) -> None:
-        self.manager.screen.fill(SKY_COLOR)
+        self.manager.screen.blit(texture.sky, (0, 0))
         # here
         super().draw()
         # or here

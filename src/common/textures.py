@@ -24,5 +24,6 @@ beetle = load_image("beetle.png")
 dandelion = load_image("dandelion.png")
 dandelion_seed = load_image("dandelion_seed.png")
 bird = SpriteSheet("bird.png", 17)
+sky = load_image("sky.png")
 
 pygame.display.quit()
