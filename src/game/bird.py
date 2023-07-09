@@ -34,6 +34,7 @@ class Bird(Sprite):
         self.flash_timer = LoopTimer(lambda: 0.2)
         self.white = False
         self.dandify = False
+        self.sound_timer = LoopTimer(lambda: uniform(1, 4))
 
     def update(self) -> None:
         if not (self.scene.camera.pos.x - 60 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 60): self.kill()
@@ -41,6 +42,9 @@ class Bird(Sprite):
         if self.dead:
             self.disintegrate()
             return
+
+        if self.sound_timer.ended:
+            choice(audio.chirp).play()
 
         if self.ani_timer.ended:
             self.frame += 1

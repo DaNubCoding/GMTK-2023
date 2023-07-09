@@ -24,3 +24,4 @@ end = load_sound("end.wav")
 grow = load_sound("grow.wav")
 footsteps = [load_sound("footsteps_1.wav"), load_sound("footsteps_2.wav"), load_sound("footsteps_3.wav")]
 wind = load_sound("wind.wav")
+chirp = [load_sound("chirp_1.wav"), load_sound("chirp_2.wav")]
