@@ -109,7 +109,7 @@ class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, Layers.GUI)
         self.energy = 10
-        self.energy_timer = LoopTimer(lambda: 1)
+        self.energy_timer = LoopTimer(lambda: 10)
 
     def update(self) -> None:
         if self.energy_timer.ended:
