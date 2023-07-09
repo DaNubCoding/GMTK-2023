@@ -31,14 +31,15 @@ class MainGame(Scene):
         self.mice_count = 0
         self.beetle_timer = LoopTimer(lambda: uniform(4, 7))
         self.wind_speed = choice([-50, 50])
-        self.wind_speed_timer = LoopTimer(lambda: uniform(4, 16))
+        self.wind_speed_timer = LoopTimer(lambda: uniform(4, 12))
         self.wind = Wind(self)
         self.wind_particle_timer = LoopTimer(lambda: 0.2)
-        self.wind_gust_start_timer = LoopTimer(lambda: uniform(8, 12))
+        self.wind_gust_start_timer = LoopTimer(lambda: uniform(6, 8))
         self.wind_gust_timer = Timer(lambda: uniform(3, 5))
         self.wind_gust_timer.start()
         self.gust = False
         self.bushes = []
+        self.dandelion_seeds = []
 
     def update(self) -> None:
         self.camera.update()

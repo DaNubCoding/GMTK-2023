@@ -2,9 +2,10 @@ from random import *
 from math import *
 import pygame
 
+from src.game.death_particle import DeathParticle
 from src.management.sprite import Sprite, Layers
 from src.common.timer import LoopTimer, Timer
-from src.game.death_particle import DeathParticle
+from src.game.dandelion import Dandelion
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
@@ -23,6 +24,7 @@ class Beetle(Sprite):
         self.death_timer = Timer(lambda: 1)
         self.digging = True
         self.collided = None
+        self.dandify = False
 
     def update(self) -> None:
         if not (self.scene.camera.pos.x - 60 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 60): self.kill()
@@ -44,14 +46,14 @@ class Beetle(Sprite):
             self.pos.x += self.direction * self.manager.dt
 
         for x in range(int(-self.size.x // 2) - 2, int(self.size.x // 2) + 2):
-            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
+            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and not isinstance(self.scene.plants[int(self.pos.x + x)], Dandelion):
                 if randint(0, 1):
                     self.move_timer.stop()
                 self.direction = abs(self.direction) * -sign(x)
 
         if self.digging: return
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
-            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
+            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and not isinstance(self.scene.plants[int(self.pos.x + x)], Dandelion):
                 self.dead = True
                 self.death_timer.start()
                 self.collided = self.scene.plants[int(self.pos.x + x)]
@@ -62,6 +64,12 @@ class Beetle(Sprite):
                 self.dead = True
                 self.death_timer.start()
                 self.scene.energy_display.energy += 2
+
+        for seed in self.scene.dandelion_seeds:
+            if pygame.Rect(seed.pos, seed.size).colliderect(pygame.Rect(self.pos - (self.size.x / 2, self.size.y), self.size)):
+                self.dead = True
+                self.death_timer.start()
+                self.dandify = True
 
     def draw(self) -> None:
         if not (self.scene.camera.pos.x - 5 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 5): return
@@ -81,3 +89,7 @@ class Beetle(Sprite):
             self.kill()
             if self.collided and abs(self.scene.player.pos.x - self.collided.pos.x) <= 5:
                 self.scene.energy_display.energy += 2
+            if self.dandify:
+                if int(self.pos.x) in self.scene.plants:
+                    self.scene.plants[int(self.pos.x)].kill()
+                self.scene.plants[int(self.pos.x)] = Dandelion(self.scene, int(self.pos.x))

@@ -21,5 +21,7 @@ energy = load_image("energy.png")
 mouse = load_image("mouse.png")
 bush = load_image("bush.png")
 beetle = load_image("beetle.png")
+dandelion = load_image("dandelion.png")
+dandelion_seed = load_image("dandelion_seed.png")
 
 pygame.display.quit()

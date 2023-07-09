@@ -4,6 +4,7 @@ from random import *
 import pygame
 
 from src.management.sprite import Sprite, Layers
+from src.game.dandelion import Dandelion
 from src.management.scene import Scene
 from src.common.constants import *
 from src.game.grass import Grass
@@ -31,6 +32,8 @@ class Ground(Sprite):
             Bush(self.scene, x, True)
         elif abs(x) > 30 and randint(0, 50) == 0:
             Grass(self.scene, x, True)
+        elif randint(0, 10) == 0:
+            Dandelion(self.scene, x, True)
 
     def update(self) -> None:
         pass

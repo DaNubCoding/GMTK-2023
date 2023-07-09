@@ -3,9 +3,10 @@ from random import *
 from math import *
 import pygame
 
+from src.game.death_particle import DeathParticle
 from src.management.sprite import Sprite, Layers
 from src.common.timer import LoopTimer, Timer
-from src.game.death_particle import DeathParticle
+from src.game.dandelion import Dandelion
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
@@ -34,6 +35,7 @@ class Mouse(Sprite):
         self.flash_count = 0
         self.flash_timer = LoopTimer(lambda: 0.2)
         self.white = False
+        self.dandify = False
 
     def update(self) -> None:
         if not (self.scene.camera.pos.x - 60 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 60): self.kill()
@@ -57,7 +59,7 @@ class Mouse(Sprite):
             self.pos.y = self.scene.get_y(self.pos.x)
 
         for x in range(int(-self.size.x // 2) - 2, int(self.size.x // 2) + 2):
-            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and self.pos.y < self.scene.get_y(self.pos.x) + 6:
+            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and self.pos.y < self.scene.get_y(self.pos.x) + 6 and not isinstance(self.scene.plants[int(self.pos.x + x)], Dandelion):
                 if randint(0, 1):
                     self.move_timer.stop()
                 self.direction = abs(self.direction) * -sign(x)
@@ -74,7 +76,7 @@ class Mouse(Sprite):
                 self.immune = False
             return
         for x in range(int(-self.size.x // 2) + 1, int(self.size.x // 2) + 1):
-            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered:
+            if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and not isinstance(self.scene.plants[int(self.pos.x + x)], Dandelion):
                 self.damage(x)
                 if self.health == 0:
                     self.dead = True
@@ -89,6 +91,15 @@ class Mouse(Sprite):
                     self.dead = True
                     self.death_timer.start()
                     self.scene.energy_display.energy += 10
+
+        for seed in self.scene.dandelion_seeds:
+            if pygame.Rect(seed.pos, seed.size).colliderect(pygame.Rect(self.pos - (self.size.x / 2, self.size.y) + (2, 2), self.size - (4, 4))):
+                self.damage(seed.pos.x - self.pos.x)
+                if self.health == 0:
+                    self.dead = True
+                    self.death_timer.start()
+                    self.scene.energy_display.energy += 5
+                    self.dandify = True
 
     def damage(self, x: int) -> None:
         self.knockback = True
@@ -120,3 +131,7 @@ class Mouse(Sprite):
             self.scene.mice_count -= 1
             if self.collided and abs(self.scene.player.pos.x - self.collided.pos.x) < self.image.get_width() // 2:
                 self.scene.energy_display.energy += 10
+            if self.dandify:
+                if int(self.pos.x) in self.scene.plants:
+                    self.scene.plants[int(self.pos.x)].kill()
+                self.scene.plants[int(self.pos.x)] = Dandelion(self.scene, int(self.pos.x))
