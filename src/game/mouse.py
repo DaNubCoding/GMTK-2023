@@ -18,7 +18,11 @@ class Mouse(Sprite):
         super().__init__(scene, Layers.ANIMALS)
         for x in range(int(x - 8), int(x + 9)):
             if x in self.scene.plants:
-                self.kill()
+                try:
+                    self.kill()
+                except ValueError:
+                    pass
+                return
         self.scene.mice_count += 1
         self.size = VEC(texture.mouse.get_size())
         self.pos = VEC(x, self.scene.get_y(x))
