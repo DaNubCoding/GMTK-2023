@@ -28,7 +28,7 @@ class Ground(Sprite):
         (surf := pygame.Surface((1, randint(11, 15)))).fill((5, 5, 5))
         self.surface.blit(surf, (0, 0), special_flags=BLEND_RGB_SUB)
 
-        if abs(x) > 210 and randint(0, 20) == 0:
+        if abs(x) > 200 and randint(0, 20) == 0:
             Dandelion(self.scene, x, True)
         elif abs(x) > 128 and randint(0, 50) == 0:
             Bush(self.scene, x, True)

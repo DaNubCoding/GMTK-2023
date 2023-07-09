@@ -67,7 +67,7 @@ class MainGame(Scene):
         if self.beetle_timer.ended:
             Beetle(self, self.camera.pos.x + randint(16, WIDTH - 16))
 
-        if self.bird_timer.ended and self.bird_count < 2:
+        if abs(self.camera.pos.x + WIDTH // 2) > 240 and self.bird_timer.ended and self.bird_count < 2:
             Bird(self, self.camera.pos.x + randint(16, WIDTH - 16))
 
         if self.wind_particle_timer.ended:
@@ -99,7 +99,7 @@ class MainGame(Scene):
 class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, Layers.GUI)
-        self.energy = 200
+        self.energy = 10
         self.energy_timer = LoopTimer(lambda: 10)
 
     def update(self) -> None:
