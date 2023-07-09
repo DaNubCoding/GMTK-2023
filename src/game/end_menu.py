@@ -18,7 +18,7 @@ class EndMenu(Scene):
 
         for i, stat in enumerate(self.stats):
             StatText(self, i, stat, self.stats[stat])
-        score = int(self.stats["distance"] * 1 + self.stats["grass"] * 0.5 + self.stats["bush"] * 2 + self.stats["dandelion"] * 3 + self.stats["beetle"] * 0.2 + self.stats["mouse"] * 0.5 + self.stats["bird"] * 4)
+        score = int(self.stats["distance"] * 1 + self.stats["grass"] * 0.5 + (30 if self.stats["bush"] else 0) + self.stats["bush"] * 2 + (60 if self.stats["dandelion"] else 0) + self.stats["dandelion"] * 3 + self.stats["beetle"] * 0.2 + (40 if self.stats["mouse"] else 0) + self.stats["mouse"] * 0.5 + (80 if self.stats["bird"] else 0) + self.stats["bird"] * 4)
         self.final = LongStatText(self, 5 + i * 10 + 15, "Final score", score)
 
         self.text_surf = MAIN_FONT.render("Press space to restart", False, (0, 0, 0), None, 39)
