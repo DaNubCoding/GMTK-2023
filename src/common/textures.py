@@ -1,11 +1,12 @@
 import pygame
 
+from src.common.exe import pathof
 from .constants import *
 
 pygame.display.set_mode((1, 1), pygame.NOFRAME)
 
 def load_image(file):
-    return pygame.image.load(f"res/textures/{file}").convert_alpha()
+    return pygame.image.load(pathof(f"res/textures/{file}")).convert_alpha()
 
 class SpriteSheet(list):
     def __init__(self, path: str, width: int) -> None:

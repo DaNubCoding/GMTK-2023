@@ -1,8 +1,9 @@
-from pygame.mixer import Channel
 import pygame
 
+from src.common.exe import pathof
+
 def load_sound(file: str) -> pygame.mixer.Sound:
-    return Sound(f"res/audio/{file}")
+    return Sound(pathof(f"res/audio/{file}"))
 
 pygame.mixer.pre_init(buffer=32)
 pygame.mixer.init(buffer=32)
@@ -15,7 +16,7 @@ class Sound(pygame.mixer.Sound):
         self.__class__.i += 1
         self.__class__.i %= 20
 
-pygame.mixer.music.load("res/audio/music.wav")
+pygame.mixer.music.load(pathof("res/audio/music.wav"))
 menu_music = load_sound("menu_music.wav")
 
 disintegrate = load_sound("disintegrate.wav")
