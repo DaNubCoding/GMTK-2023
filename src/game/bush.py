@@ -1,4 +1,5 @@
 from pygame.locals import *
+from random import *
 from math import *
 
 from src.management.sprite import Sprite, Layers
@@ -6,6 +7,7 @@ from src.management.scene import Scene
 from src.common.timer import LoopTimer
 import src.common.textures as texture
 from src.common.constants import *
+import src.common.audio as audio
 from src.common.utils import *
 
 class Bush(Sprite):
@@ -23,6 +25,7 @@ class Bush(Sprite):
         self.rot = 0
         self.withered = withered
         self.replaced_plant = None
+        self.sound_timer = LoopTimer(lambda: 1)
 
         if not withered:
             self.scene.stats["bush"] += 1
@@ -41,6 +44,9 @@ class Bush(Sprite):
             self.pos += self.vel * self.manager.dt
             if self.detach_timer.ended:
                 self.scene.energy_display.energy -= 1
+
+            if self.sound_timer.ended:
+                choice(audio.rustle).play()
 
         self.pos.y = self.scene.get_y(self.pos.x)
 

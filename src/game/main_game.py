@@ -32,6 +32,8 @@ class MainGame(Scene):
         }
 
         self.plants = {}
+        self.bushes = []
+        self.dandelion_seeds = []
         self.grounds = {}
         for x in range(-WIDTH // 2, WIDTH // 2 + 1):
             Ground(self, x)
@@ -49,8 +51,6 @@ class MainGame(Scene):
         self.wind_gust_timer = Timer(lambda: uniform(3, 5))
         self.wind_gust_timer.start()
         self.gust = False
-        self.bushes = []
-        self.dandelion_seeds = []
         self.bird_timer = LoopTimer(lambda: uniform(4, 7))
         self.bird_count = 0
 
