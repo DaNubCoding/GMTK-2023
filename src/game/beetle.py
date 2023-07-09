@@ -9,6 +9,7 @@ from src.game.dandelion import Dandelion
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
+import src.common.audio as audio
 from src.common.utils import *
 
 class Beetle(Sprite):
@@ -25,6 +26,7 @@ class Beetle(Sprite):
         self.digging = True
         self.collided = None
         self.dandify = False
+        self.sound_timer = LoopTimer(lambda: 1.5)
 
     def update(self) -> None:
         if not (self.scene.camera.pos.x - 60 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 60): self.kill()
@@ -44,6 +46,8 @@ class Beetle(Sprite):
             self.direction = uniform(-20, -15) if randint(0, 1) else uniform(15, 20)
         if not self.move_timer.ended and not self.digging:
             self.pos.x += self.direction * self.manager.dt
+            if self.sound_timer.ended:
+                choice(audio.footsteps).play()
 
         for x in range(int(-self.size.x // 2) - 2, int(self.size.x // 2) + 2):
             if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and not isinstance(self.scene.plants[int(self.pos.x + x)], Dandelion):
@@ -57,6 +61,8 @@ class Beetle(Sprite):
                 self.dead = True
                 self.death_timer.start()
                 self.collided = self.scene.plants[int(self.pos.x + x)]
+                audio.hurt.play()
+                audio.disintegrate.play()
 
         for bush in self.scene.bushes:
             if not bush.detached: continue
@@ -64,12 +70,16 @@ class Beetle(Sprite):
                 self.dead = True
                 self.death_timer.start()
                 self.scene.energy_display.energy += 2
+                audio.hurt.play()
+                audio.disintegrate.play()
 
         for seed in self.scene.dandelion_seeds:
             if pygame.Rect(seed.pos, seed.size).colliderect(pygame.Rect(self.pos - (self.size.x / 2, self.size.y), self.size)):
                 self.dead = True
                 self.death_timer.start()
                 self.dandify = True
+                audio.hurt.play()
+                audio.disintegrate.play()
 
     def draw(self) -> None:
         if not (self.scene.camera.pos.x - 5 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 5): return

@@ -7,6 +7,7 @@ from src.management.sprite import Sprite, Layers
 from src.management.scene import Scene
 from src.common.timer import LoopTimer
 import src.common.textures as texture
+import src.common.audio as audio
 from src.common.constants import *
 from src.common.utils import *
 
@@ -67,6 +68,7 @@ class Grass(Sprite):
         direction = choice([left, right]) if len(left) == len(right) else (left if len(left) > len(right) else right)
         if not direction: return
         Grass(self.scene, self.pos.x + choice(direction))
+        audio.grow.play()
 
     def move(self, direction: int) -> None:
         skip = abs(direction)

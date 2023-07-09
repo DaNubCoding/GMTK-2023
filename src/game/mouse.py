@@ -10,6 +10,7 @@ from src.game.dandelion import Dandelion
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
+import src.common.audio as audio
 from src.common.utils import *
 
 class Mouse(Sprite):
@@ -79,6 +80,7 @@ class Mouse(Sprite):
             if int(self.pos.x + x) in self.scene.plants and not self.scene.plants[int(self.pos.x + x)].withered and not isinstance(self.scene.plants[int(self.pos.x + x)], Dandelion):
                 self.damage(x)
                 if self.health == 0:
+                    audio.disintegrate.play()
                     self.dead = True
                     self.death_timer.start()
                     self.collided = self.scene.plants[int(self.pos.x + x)]
@@ -88,6 +90,7 @@ class Mouse(Sprite):
             if self.pos.x - 16 <= bush.pos.x <= self.pos.x + 16:
                 self.damage(bush.pos.x - self.pos.x)
                 if self.health == 0:
+                    audio.disintegrate.play()
                     self.dead = True
                     self.death_timer.start()
                     self.scene.energy_display.energy += 10
@@ -96,12 +99,14 @@ class Mouse(Sprite):
             if pygame.Rect(seed.pos, seed.size).colliderect(pygame.Rect(self.pos - (self.size.x / 2, self.size.y) + (2, 2), self.size - (4, 4))):
                 self.damage(seed.pos.x - self.pos.x)
                 if self.health == 0:
+                    audio.disintegrate.play()
                     self.dead = True
                     self.death_timer.start()
                     self.scene.energy_display.energy += 5
                     self.dandify = True
 
     def damage(self, x: int) -> None:
+        audio.hurt.play()
         self.knockback = True
         self.flashing = True
         self.vel.x = -sign(x) * 90

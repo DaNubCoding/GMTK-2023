@@ -10,6 +10,7 @@ from src.game.dandelion import Dandelion
 from src.management.scene import Scene
 import src.common.textures as texture
 from src.common.constants import *
+import src.common.audio as audio
 from src.common.utils import *
 
 class Bird(Sprite):
@@ -76,6 +77,7 @@ class Bird(Sprite):
                 if plant.pos.y - 6 > self.rect.bottom: continue
                 self.damage()
                 if self.health == 0:
+                    audio.disintegrate.play()
                     self.dead = True
                     self.death_timer.start()
                     self.collided = self.scene.plants[int(self.pos.x + x)]
@@ -86,6 +88,7 @@ class Bird(Sprite):
             if self.rect.colliderect(pygame.Rect(bush.pos.x - bush.size.x / 2, bush.pos.y - bush.size.y, bush.size.x, bush.size.y)):
                 self.damage()
                 if self.health == 0:
+                    audio.disintegrate.play()
                     self.dead = True
                     self.death_timer.start()
                     self.scene.energy_display.energy += 10
@@ -95,6 +98,7 @@ class Bird(Sprite):
             if self.rect.colliderect(pygame.Rect(seed.pos, seed.size)):
                 self.damage()
                 if self.health == 0:
+                    audio.disintegrate.play()
                     self.dead = True
                     self.death_timer.start()
                     self.scene.energy_display.energy += 5
@@ -102,6 +106,7 @@ class Bird(Sprite):
                 break
 
     def damage(self) -> None:
+        audio.hurt.play()
         self.knockback = True
         self.flashing = True
         self.immune_timer.start()

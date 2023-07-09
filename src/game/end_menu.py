@@ -7,6 +7,7 @@ from src.game.end_text import StatText, LongStatText
 from src.management.scene import Scene
 from src.common.timer import LoopTimer
 from src.common.constants import *
+import src.common.audio as audio
 
 class EndMenu(Scene):
     def setup(self) -> None:
@@ -22,6 +23,9 @@ class EndMenu(Scene):
         self.final = LongStatText(self, 5 + i * 10 + 15, "Final score", score)
 
         self.text_surf = MAIN_FONT.render("Press space to restart", False, (0, 0, 0), None, 39)
+
+        pygame.mixer.pause()
+        audio.end.play()
 
     def update(self) -> None:
         super().update()

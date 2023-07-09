@@ -14,6 +14,7 @@ from src.game.beetle import Beetle
 from src.common.constants import *
 from src.game.mouse import Mouse
 from src.game.grass import Grass
+import src.common.audio as audio
 from src.game.bird import Bird
 
 class MainGame(Scene):
@@ -52,6 +53,8 @@ class MainGame(Scene):
         self.dandelion_seeds = []
         self.bird_timer = LoopTimer(lambda: uniform(4, 7))
         self.bird_count = 0
+
+        audio.wind.play(-1)
 
     def update(self) -> None:
         self.camera.update()
