@@ -7,6 +7,7 @@ from src.management.scene import Scene
 from src.common.timer import LoopTimer
 import src.common.textures as texture
 from src.common.constants import *
+import src.common.audio as audio
 
 class MainMenu(Scene):
     def setup(self) -> None:
@@ -15,6 +16,8 @@ class MainMenu(Scene):
         self.white = False
         self.white_text = MAIN_FONT.render("Press space to start!", False, (255, 255, 255))
         self.black_text = MAIN_FONT.render("Press space to start!", False, (0, 0, 0))
+
+        audio.menu_music.play()
 
     def update(self) -> None:
         super().update()

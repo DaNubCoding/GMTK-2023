@@ -54,6 +54,9 @@ class MainGame(Scene):
         self.bird_timer = LoopTimer(lambda: uniform(4, 7))
         self.bird_count = 0
 
+        pygame.mixer.pause()
+        pygame.mixer.music.set_volume(0.4)
+        pygame.mixer.music.play(-1)
         audio.wind.play(-1)
 
     def update(self) -> None:

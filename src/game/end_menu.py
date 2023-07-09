@@ -25,6 +25,7 @@ class EndMenu(Scene):
         self.text_surf = MAIN_FONT.render("Press space to restart", False, (0, 0, 0), None, 39)
 
         pygame.mixer.pause()
+        pygame.mixer.music.fadeout(1500)
         audio.end.play()
 
     def update(self) -> None:

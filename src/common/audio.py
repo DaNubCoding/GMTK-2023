@@ -14,6 +14,9 @@ class Sound(pygame.mixer.Sound):
         pygame.mixer.Channel(self.i).play(self, loops=loops)
         self.__class__.i += 1
 
+pygame.mixer.music.load("res/audio/music.wav")
+menu_music = load_sound("menu_music.wav")
+
 disintegrate = load_sound("disintegrate.wav")
 hurt = load_sound("hurt.wav")
 end = load_sound("end.wav")
