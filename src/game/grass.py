@@ -16,7 +16,7 @@ class Grass(Sprite):
         super().__init__(scene, Layers.GRASS)
         self.scene.plants[int(x)] = self
         self.size = texture.grass.size.copy()
-        self.pos = VEC(x, -200)
+        self.pos = VEC(x, -150)
         self.sheet = texture.grass_sprout
         self.frame = 0
         self.ani_timer = LoopTimer(lambda: 0.08)
