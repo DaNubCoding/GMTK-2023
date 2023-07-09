@@ -135,3 +135,4 @@ class Mouse(Sprite):
                 if int(self.pos.x) in self.scene.plants:
                     self.scene.plants[int(self.pos.x)].kill()
                 self.scene.plants[int(self.pos.x)] = Dandelion(self.scene, int(self.pos.x))
+            self.scene.stats["mouse"] += 1

@@ -3,9 +3,10 @@ from enum import Enum
 import pygame
 import sys
 
-from src.common.constants import FPS, SIZE
 from src.game.main_game import MainGame
+from src.game.main_menu import MainMenu
 from src.management.scene import Scene
+from src.game.end_menu import EndMenu
 from src.common.constants import *
 
 class AbortScene(Exception):
@@ -84,3 +85,5 @@ class GameManager:
 
     class Scenes(Enum):
         MainGame = MainGame
+        MainMenu = MainMenu
+        EndMenu = EndMenu

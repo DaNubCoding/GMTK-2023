@@ -21,6 +21,10 @@ class Dandelion(Sprite):
         self.lighten = (randint(0, 15), randint(0, 40), randint(0, 15))
         self.withered = withered
 
+        if not withered:
+            self.scene.stats["dandelion"] += 1
+            self.scene.stats["distance"] = max(self.scene.stats["distance"], int(abs(self.pos.x)))
+
     def update(self) -> None:
         if not (self.scene.camera.pos.x - 1 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 1): return
         self.pos.y = self.scene.get_y(self.pos.x)
@@ -59,6 +63,8 @@ class Dandelion(Sprite):
         if self.scene.player.withered:
             self.scene.player.withered = False
             self.scene.energy_display.energy -= 1
+            self.scene.stats["dandelion"] += 1
+            self.scene.stats["distance"] = max(self.scene.stats["distance"], int(abs(self.scene.player.pos.x)))
 
 class DandelionSeed(Sprite):
     def __init__(self, scene: Scene, pos: tuple[int, int]) -> None:

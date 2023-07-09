@@ -24,6 +24,10 @@ class Bush(Sprite):
         self.withered = withered
         self.replaced_plant = None
 
+        if not withered:
+            self.scene.stats["bush"] += 1
+            self.scene.stats["distance"] = max(self.scene.stats["distance"], int(abs(self.pos.x)))
+
     def update(self) -> None:
         self.bright = False
         if self.scene.player is self:
@@ -63,6 +67,7 @@ class Bush(Sprite):
             if self.fixed_x in self.scene.plants:
                 self.scene.plants[self.fixed_x].kill()
             self.scene.plants[self.fixed_x] = self
+            self.scene.stats["distance"] = max(self.scene.stats["distance"], int(abs(self.pos.x)))
 
     def move(self, direction: int) -> None:
         if self.detached: return
@@ -78,3 +83,5 @@ class Bush(Sprite):
         if self.scene.player.withered:
             self.scene.player.withered = False
             self.scene.energy_display.energy -= 1
+            self.scene.stats["bush"] += 1
+            self.scene.stats["distance"] = max(self.scene.stats["distance"], int(abs(self.scene.player.pos.x)))

@@ -27,6 +27,10 @@ class Grass(Sprite):
             self.frame = randint(0, self.sheet.len - 1)
             self.ani_timer = LoopTimer(lambda: uniform(0.15, 0.3))
 
+        if not withered:
+            self.scene.stats["grass"] += 1
+            self.scene.stats["distance"] = max(self.scene.stats["distance"], int(abs(self.pos.x)))
+
     def update(self) -> None:
         if not (self.scene.camera.pos.x - 1 <= self.pos.x <= self.scene.camera.pos.x + WIDTH + 1): return
         self.pos.y = self.scene.get_y(self.pos.x)
@@ -77,3 +81,5 @@ class Grass(Sprite):
         if self.scene.player.withered:
             self.scene.player.withered = False
             self.scene.energy_display.energy -= 1
+            self.scene.stats["grass"] += 1
+            self.scene.stats["distance"] = max(self.scene.stats["distance"], int(abs(self.scene.player.pos.x)))

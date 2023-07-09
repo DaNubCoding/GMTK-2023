@@ -12,3 +12,4 @@ GRAVITY = 90
 
 pygame.font.init()
 ENERGY_FONT = pygame.font.Font("res/fonts/PixgamerRegular-OVD6A.ttf", 16)
+MAIN_FONT = pygame.font.Font("res/fonts/slkscr.ttf", 9)

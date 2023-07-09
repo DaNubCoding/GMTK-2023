@@ -19,12 +19,21 @@ from src.game.bird import Bird
 class MainGame(Scene):
     def setup(self) -> None:
         super().setup()
-        self.plants = {}
+        
+        self.stats = {
+            "distance": 0,
+            "grass": 0,
+            "bush": 0,
+            "dandelion": 0,
+            "beetle": 0,
+            "mouse": 0,
+            "bird": 0,
+        }
 
+        self.plants = {}
         self.grounds = {}
         for x in range(-WIDTH // 2, WIDTH // 2 + 1):
             Ground(self, x)
-
         self.player = Grass(self, 0)
         self.camera = Camera(self)
         self.energy_display = EnergyDisplay(self)
@@ -100,11 +109,15 @@ class EnergyDisplay(Sprite):
     def __init__(self, scene: Scene) -> None:
         super().__init__(scene, Layers.GUI)
         self.energy = 10
-        self.energy_timer = LoopTimer(lambda: 10)
+        self.energy_timer = LoopTimer(lambda: 1)
 
     def update(self) -> None:
         if self.energy_timer.ended:
             self.energy -= 1
+        if self.energy < 0:
+            self.energy = 0
+            self.scene.screenshot = self.manager.screen.copy()
+            self.manager.new_scene("EndMenu")
 
     def draw(self) -> None:
         self.manager.screen.blit(texture.energy, (3, 2))
