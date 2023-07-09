@@ -30,7 +30,7 @@ class GameManager:
 
         self.screen = pygame.Surface((WIN_WIDTH // 4, WIN_HEIGHT // 4))
 
-        self.scene = MainGame(self, None)
+        self.scene = MainMenu(self, None)
         self.scene.setup()
 
     def run(self) -> None:
