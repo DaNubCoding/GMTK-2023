@@ -32,7 +32,7 @@ class Ground(Sprite):
 
         if abs(x) > 200 and randint(0, 20) == 0:
             Dandelion(self.scene, x, True)
-        elif abs(x) > 0 and randint(0, 50) == 0:
+        elif abs(x) > 128 and randint(0, 50) == 0:
             Bush(self.scene, x, True)
         elif abs(x) > 30 and randint(0, 50) == 0:
             Grass(self.scene, x, True)
