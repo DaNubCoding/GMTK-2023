@@ -14,6 +14,7 @@ from src.game.beetle import Beetle
 from src.common.constants import *
 from src.game.mouse import Mouse
 from src.game.grass import Grass
+from src.game.bird import Bird
 
 class MainGame(Scene):
     def setup(self) -> None:
@@ -40,6 +41,8 @@ class MainGame(Scene):
         self.gust = False
         self.bushes = []
         self.dandelion_seeds = []
+        self.bird_timer = LoopTimer(lambda: uniform(4, 7))
+        self.bird_count = 0
 
     def update(self) -> None:
         self.camera.update()
@@ -63,6 +66,9 @@ class MainGame(Scene):
 
         if self.beetle_timer.ended:
             Beetle(self, self.camera.pos.x + randint(16, WIDTH - 16))
+
+        if self.bird_timer.ended and self.bird_count < 2:
+            Bird(self, self.camera.pos.x + randint(16, WIDTH - 16))
 
         if self.wind_particle_timer.ended:
             WindParticle(self)

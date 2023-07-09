@@ -67,7 +67,7 @@ class DandelionSeed(Sprite):
         self.size = VEC(texture.dandelion_seed.get_size())
         self.pos = VEC(pos)
         self.vel = VEC(0, 0)
-        self.lift = uniform(30, 130)
+        self.lift = uniform(20, 160)
         self.lift_timer = LoopTimer(lambda: uniform(0.3, 0.7))
 
     def update(self) -> None:
@@ -78,7 +78,7 @@ class DandelionSeed(Sprite):
         self.pos += self.vel * self.manager.dt
 
         if self.lift_timer.ended:
-            self.lift = uniform(30, 130)
+            self.lift = uniform(20, 160)
 
         if self.pos.y + 3 >= self.scene.get_y(self.pos.x):
             self.kill()
