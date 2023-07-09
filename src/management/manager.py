@@ -28,6 +28,8 @@ class GameManager:
         self.window_changing = False
         self.events = {}
 
+        pygame.key.set_repeat(700, 100)
+
         self.screen = pygame.Surface((WIN_WIDTH // 4, WIN_HEIGHT // 4))
 
         self.scene = MainMenu(self, None)
