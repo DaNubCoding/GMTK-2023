@@ -1,4 +1,4 @@
-from opensimplex import noise2
+from opensimplex import noise2, random_seed
 from pygame.locals import *
 from random import *
 import pygame
@@ -9,6 +9,8 @@ from src.management.scene import Scene
 from src.common.constants import *
 from src.game.grass import Grass
 from src.game.bush import Bush
+
+random_seed()
 
 class Ground(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
