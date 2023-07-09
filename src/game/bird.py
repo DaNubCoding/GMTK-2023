@@ -46,7 +46,7 @@ class Bird(Sprite):
             self.frame %= texture.bird.len
 
         if self.pos.distance_to(self.target) <= 2:
-            self.target = self.pos + (randint(-40, -15) if randint(0, 1) else randint(15, 40), randint(-5, 5))
+            self.target = self.pos + (randint(-40, -15) if randint(0, 1) else randint(15, 40), randint(-5, 8))
         self.vel = (self.target - self.pos and (self.target - self.pos).normalize()) * 25
         self.pos += self.vel * self.manager.dt
 
@@ -63,6 +63,8 @@ class Bird(Sprite):
             self.target.x -= 20
         elif self.target.x < self.scene.camera.pos.x:
             self.target.x += 20
+        if self.target.y < 0:
+            self.target.y += 10
 
         if self.immune:
             if self.immune_timer.ended:
