@@ -16,7 +16,7 @@ from src.common.utils import *
 class Mouse(Sprite):
     def __init__(self, scene: Scene, x: int) -> None:
         super().__init__(scene, Layers.ANIMALS)
-        for x in range(x - 8, x + 9):
+        for x in range(int(x - 8), int(x + 9)):
             if x in self.scene.plants:
                 self.kill()
         self.scene.mice_count += 1
